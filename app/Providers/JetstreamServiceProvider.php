@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -39,11 +40,15 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::permissions([
+        Jetstream::role(User::ROLE_ADMIN, 'Administrator', [
             'create',
             'read',
             'update',
             'delete',
+        ]);
+
+        Jetstream::role(User::ROLE_CLIENT, 'Client', [
+            'read',
         ]);
     }
 }

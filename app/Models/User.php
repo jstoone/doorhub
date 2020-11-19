@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\Jetstream;
+use Laravel\Jetstream\Role;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -19,6 +21,18 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public const ROLE_CLIENT = 'client';
+    public const ROLE_ADMIN = 'admin';
+
+    /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'role' => self::ROLE_CLIENT,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +41,7 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'role',
         'phone',
         'email',
         'password',
@@ -61,6 +76,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getRoleAttribute(string $value): Role
+    {
+        return Jetstream::findRole($value);
+    }
 
     public function company(): BelongsTo
     {
