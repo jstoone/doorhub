@@ -23,9 +23,12 @@ use Illuminate\Validation\ValidationException;
 Route::post('/token', [TokenController::class, 'store']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::apiResource('companies', CompanyController::class);
-    Route::apiResource('companies.users', CompanyUserController::class);
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('companies', CompanyController::class)
+        ->only(['index', 'store', 'show']);
+    Route::apiResource('companies.users', CompanyUserController::class)
+        ->only(['index', 'store', 'show']);
+    Route::apiResource('users', UserController::class)
+        ->only(['index', 'store', 'show']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
