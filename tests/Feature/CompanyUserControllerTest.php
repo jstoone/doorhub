@@ -16,9 +16,7 @@ class CompanyUserControllerTest extends TestCase
         $expected = Company::factory()->hasUsers()->create();
 
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $this->get(route('companies.users.index', $expected))
@@ -28,13 +26,10 @@ class CompanyUserControllerTest extends TestCase
 
     public function testItAttachUserToEntity()
     {
-        $this->withoutExceptionHandling();
         $expected = User::factory()->create();
 
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $company = Company::factory()->create();

@@ -18,12 +18,21 @@ class UserTest extends TestCase
         $this->assertInstanceOf(Company::class, $user->company);
     }
 
-    public function testByDefaultHasRoleOfClient()
+    public function testItByDefaultHasRoleOfClient()
     {
         $user = User::factory()->create();
 
         $this->assertInstanceOf(Role::class, $user->role);
         $this->assertSame(User::ROLE_CLIENT, $user->role->key);
+        $this->assertSame(['read'], $user->role->permissions);
+    }
+
+    public function testItCanHaveRoleOfAdmin()
+    {
+        $user = User::factory()->admin()->create();
+
+        $this->assertInstanceOf(Role::class, $user->role);
+        $this->assertSame(User::ROLE_ADMIN, $user->role->key);
         $this->assertSame(['read'], $user->role->permissions);
     }
 }

@@ -15,9 +15,7 @@ class CompanyControllerTest extends TestCase
     public function testItListsEntriesForAdmins()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $companies = Company::factory()->count(5)->create();
@@ -31,9 +29,7 @@ class CompanyControllerTest extends TestCase
     public function testItDoesNotListEntriesForClients()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_CLIENT,
-            ])
+            User::factory()->admin()->create()
         );
 
         $companies = Company::factory()->count(5)->create();
@@ -72,9 +68,7 @@ class CompanyControllerTest extends TestCase
     public function testItCanBeCreatedByAdmins()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $expectedCompany = Company::factory()->make();
@@ -94,9 +88,7 @@ class CompanyControllerTest extends TestCase
     public function testItCannotBeCreatedByClients()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_CLIENT,
-            ])
+            User::factory()->create()
         );
 
         $expectedCompany = Company::factory()->make();

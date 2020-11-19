@@ -16,18 +16,19 @@ class DatabaseSeeder extends Seeder
     {
         // General admin user
         User::factory()->create([
-            'role' => User::ROLE_ADMIN,
+            'email' => 'admin@example.com',
+            'role'  => User::ROLE_ADMIN,
         ]);
 
         // First User and Company pair.
-        User::factory()
-            ->forCompany()
-            ->create();
+        User::factory()->forCompany()->create([
+            'email' => 'john@example.com',
+        ]);
 
         // Second User and Company pair.
-        User::factory()
-            ->forCompany()
-            ->create();
+        User::factory()->forCompany()->create([
+            'email' => 'jane@example.com',
+        ]);
 
         if (app()->runningInConsole()) {
             $token = User::first()->createToken('postman');

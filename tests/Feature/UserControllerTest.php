@@ -13,9 +13,7 @@ class UserControllerTest extends TestCase
     public function testItListsEntriesForAdmins()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $this->get(route('users.index'))
@@ -26,9 +24,7 @@ class UserControllerTest extends TestCase
     public function testItDoesNotListEntriesForClients()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_CLIENT,
-            ])
+            User::factory()->create()
         );
 
         $this->get(route('users.index'))
@@ -62,9 +58,7 @@ class UserControllerTest extends TestCase
     public function testItCanSeeUnrelatedEntityAsAdmin()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $unrelatedUser = User::factory()->create();
@@ -75,9 +69,7 @@ class UserControllerTest extends TestCase
     public function testItCanBeCreatedByAdmins()
     {
         Sanctum::actingAs(
-            User::factory()->create([
-                'role' => User::ROLE_ADMIN,
-            ])
+            User::factory()->admin()->create()
         );
 
         $expected = User::factory()->make();
