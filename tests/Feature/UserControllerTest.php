@@ -71,4 +71,28 @@ class UserControllerTest extends TestCase
         $this->get(route('users.show', $unrelatedUser))
              ->assertOk();
     }
+
+    public function testItCanBeCreatedByAdmins()
+    {
+        Sanctum::actingAs(
+            User::factory()->create([
+                'role' => User::ROLE_ADMIN,
+            ])
+        );
+
+        $expected = User::factory()->make();
+
+        $response = $this->post(route('users.store'),
+            $expected->toArray() + [
+                'password' => 'password',
+            ]
+        );
+
+        $response->assertCreated()
+                 ->assertJson(
+                     $expected->toArray()
+                 );
+
+        $this->assertDatabaseCount('users', 2);
+    }
 }
