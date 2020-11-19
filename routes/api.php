@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +24,8 @@ Route::post('/token', [TokenController::class, 'store']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('companies', CompanyController::class);
+    Route::apiResource('companies.users', CompanyUserController::class);
+    Route::apiResource('users', UserController::class);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
