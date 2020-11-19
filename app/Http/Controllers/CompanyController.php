@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Company::class, 'company');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        return Company::all();
     }
 
     /**
@@ -25,7 +30,18 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'         => 'required|string',
+            'street'       => 'required|string',
+            'house_number' => 'required|string',
+            'country'      => 'required|string',
+            'city'         => 'required|string',
+            'phone'        => 'required|string',
+            'vat'          => 'required|string',
+            'is_active'    => 'required|boolean',
+        ]);
+
+        return response(Company::create($data), 201);
     }
 
     /**
@@ -36,7 +52,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return $company;
     }
 
     /**
